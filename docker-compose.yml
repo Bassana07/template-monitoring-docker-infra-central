@@ -1,0 +1,86 @@
+services:
+
+  # ======================
+  # API Gateway
+  # ======================
+  gateway:
+    image: traefik:v3.0
+    container_name: gateway
+    command:
+      - "--configFile=/traefik.yml"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    env_file:
+      - .env
+    volumes:
+      - ./gateway/traefik.yml:/traefik.yml
+      - ./volumes/letsencrypt:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - reseaux-net
+
+  # ======================
+  # Microservices
+  # ======================
+  auth:
+    image: ghcr.io/ton-org/auth-service:latest
+    container_name: auth
+    networks:
+      - reseaux-net
+
+  # ======================
+  # Databases
+  # ======================
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    env_file:
+      - .env
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data
+    networks:
+      - reseaux-net
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    command: server /data --console-address ":9001"
+    env_file:
+      - .env
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - ./volumes/minio:/data
+    networks:
+      - reseaux-net
+
+  # ======================
+  # Monitoring
+  # ======================
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - reseaux-net
+
+  grafana:
+  image: grafana/grafana
+  container_name: grafana
+  ports:
+    - "3000:3000"
+  volumes:
+    - ./volumes/grafana:/var/lib/grafana
+    - ./monitoring/grafana:/etc/grafana/provisioning
+  networks:
+    - reseaux-net
+
+networks:
+  reseaux-net:
+    driver: bridge

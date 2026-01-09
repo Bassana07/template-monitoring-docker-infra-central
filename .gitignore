@@ -1,0 +1,59 @@
+# =========================
+# 🔐 Secrets & Environments
+# =========================
+.env
+.env.*
+*.pem
+*.key
+secrets/
+credentials/
+
+# =========================
+# 🐳 Docker
+# =========================
+**/volumes/
+**/data/
+docker-data/
+tmp/
+
+# =========================
+# 📊 Monitoring
+# =========================
+grafana.db
+grafana.ini
+
+# =========================
+# 🧠 Logs
+# =========================
+logs/
+*.log
+
+# =========================
+# 🖥️ OS & Editor
+# =========================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# =========================
+# ⚙️ Build & Cache
+# =========================
+node_modules/
+dist/
+build/
+coverage/
+
+# =========================
+# 📄 Backup files
+# =========================
+*.bak
+*.tmp
+*~
+
+# =========================
+# 🔐 Certificates (Traefik / SSL)
+# =========================
+letsencrypt/
+acme.json
