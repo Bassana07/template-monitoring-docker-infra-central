@@ -11,7 +11,14 @@ Infrastructure Docker pour architecture microservices.
 - Prometheus
 - Grafana
 
-## ▶️ Lancer
+## ▶️ Lancer en dev
+docker compose \
+  -f docker-compose.yml \
+  -f docker-compose.dev.yml \
+  up --build
 
-```bash
-docker compose up -d
+## ▶️ Lancer en prod
+docker compose \
+  -f docker-compose.yml \
+  -f docker-compose.prod.yml \
+  up -d

@@ -1,0 +1,27 @@
+services:
+
+  gateway:
+    ports:
+      - "80:80"
+      - "8080:8080"
+
+  auth:
+    build: ../auth-service
+    image: auth-service:dev
+    environment:
+      NODE_ENV: development
+    ports:
+      - "4001:4000"
+
+  postgres:
+    ports:
+      - "5432:5432"
+
+  minio:
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+
+  grafana:
+    ports:
+      - "3000:3000"
